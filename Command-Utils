@@ -1,0 +1,47 @@
+#Unjail Validator
+zetacored tx slashing unjail --from CosmicNode_key --chain-id zetachain_7000-1 --gas-prices 20000000000azeta --gas-adjustment 1.5 --gas auto -y
+
+#Signing Info
+zetacored query slashing signing-info $(zetacored tendermint show-validator)
+
+#List All Active Validators
+zetacored q staking validators -oj --limit=3000 | jq '.validators[] | select(.status=="BOND_STATUS_BONDED")' | jq -r '(.tokens|tonumber/pow(10; 6)|floor|tostring) + " \t " + .description.moniker' | sort -gr | nl
+
+#List All Inactive Validators
+zetacored q staking validators -oj --limit=3000 | jq '.validators[] | select(.status=="BOND_STATUS_UNBONDED" or .status=="BOND_STATUS_UNBONDING")' | jq -r '(.tokens|tonumber/pow(10; 6)|floor|tostring) + " \t " + .description.moniker' | sort -gr | nl
+
+#View Validator Details
+zetacored q staking validator $(zetacored keys show CosmicNode_key --bech val -a)
+
+#Withdraw Rewards From All Validators
+zetacored tx distribution withdraw-all-rewards --from CosmicNode_key --chain-id zetachain_7000-1 --gas-prices 20000000000azeta --gas-adjustment 1.5 --gas auto -y
+
+#Withdraw Commission And Rewards From Your Validator
+zetacored tx distribution withdraw-rewards $(zetacored keys show CosmicNode_key --bech val -a) --commission --from CosmicNode_key --chain-id zetachain_7000-1 --gas-prices 20000000000azeta --gas-adjustment 1.5 --gas auto -y
+
+#Delegate to yourself
+zetacored tx staking delegate $(zetacored keys show CosmicNode_key --bech val -a) 1000000azeta --from CosmicNode_key --chain-id zetachain_7000-1 --gas-prices 20000000000azeta --gas-adjustment 1.5 --gas auto -y
+
+#Delegate
+zetacored tx staking delegate METTRELENOMVALOPER 1000000azeta --from CosmicNode_key --chain-id zetachain_7000-1 --gas-prices 20000000000azeta --gas-adjustment 1.5 --gas auto -y
+
+#Redelegate
+zetacored tx staking redelegate $(zetacored keys show CosmicNode_key --bech val -a) METTRELENOMVALOPER 1000000azeta --from CosmicNode_key --chain-id zetachain_7000-1 --gas-prices 20000000000azeta --gas-adjustment 1.5 --gas auto -y
+
+#Unbond
+zetacored tx staking unbond $(zetacored keys show CosmicNode_key --bech val -a) 1000000azeta --from CosmicNode_key --chain-id zetachain_7000-1 --gas-prices 20000000000azeta --gas-adjustment 1.5 --gas auto -y
+
+#Send
+zetacored tx bank send CosmicNode_key FINDWALLET 1000000azeta --from CosmicNode_key --chain-id zetachain_7000-1 --gas-prices 20000000000azeta --gas-adjustment 1.5 --gas auto -y
+
+#Create New Text Proposal
+zetacored tx gov submit-proposal \
+--title="ProposalBusbus Love" \
+--description="Kingbusbus" \
+--deposit=1000000azeta \
+--type="Text" \
+--from=CosmicNode_key \
+--gas-prices=20000000000azeta \
+--gas-adjustment=1.5 \
+--gas=auto \
+-y 

@@ -1,0 +1,49 @@
+Secure Server Setup
+# generate ssh keys:
+ssh-keygen -t rsa
+
+# save the output, we'll use it later on instead of YOUR_PUBLIC_SSH_KEY
+cat ~/.ssh/id_rsa.pub
+# upgrade system packages
+sudo apt update
+sudo apt upgrade -y
+
+# add new admin user
+sudo adduser admin --disabled-password -q
+
+# upload public ssh key, replace YOUR_PUBLIC_SSH_KEY with the key above
+mkdir /home/admin/.ssh
+echo "YOUR_PUBLIC_SSH_KEY" >> /home/admin/.ssh/authorized_keys
+sudo chown admin: /home/admin/.ssh
+sudo chown admin: /home/admin/.ssh/authorized_keys
+
+echo "admin ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
+
+# disable root login, disable password authentication, use ssh keys only
+sudo sed -i 's|^PermitRootLogin .*|PermitRootLogin no|' /etc/ssh/sshd_config
+sudo sed -i 's|^ChallengeResponseAuthentication .*|ChallengeResponseAuthentication no|' /etc/ssh/sshd_config
+sudo sed -i 's|^#PasswordAuthentication .*|PasswordAuthentication no|' /etc/ssh/sshd_config
+sudo sed -i 's|^#PermitEmptyPasswords .*|PermitEmptyPasswords no|' /etc/ssh/sshd_config
+sudo sed -i 's|^#PubkeyAuthentication .*|PubkeyAuthentication yes|' /etc/ssh/sshd_config
+
+sudo systemctl restart sshd
+
+# install fail2ban
+sudo apt install -y fail2ban
+
+# install and configure firewall
+sudo apt install -y ufw
+sudo ufw default allow outgoing
+sudo ufw default deny incoming
+sudo ufw allow ssh
+sudo ufw allow 9100
+sudo ufw allow 26656
+
+# make sure you expose ALL necessary ports, only after that enable firewall
+sudo ufw enable
+
+# update servername, if needed, replace YOUR_SERVERNAME with wanted server name
+sudo hostnamectl set-hostname YOUR_SERVERNAME
+
+# now you can logout (exit) and login again using ssh admin@YOUR_SERVER_IP
+

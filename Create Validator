@@ -41,7 +41,7 @@ babylond tx checkpointing create-validator \
 --amount=10ubbn \
 --pubkey=$(babylond tendermint show-validator) \
 --moniker="$NODE_MONIKER" \
---details="Noderunner who is grateful to the NODEJUMPER team for their support" \
+--details="" \
 --chain-id=bbn-test-2 \
 --commission-rate=0.1 \
 --commission-max-rate=0.2 \

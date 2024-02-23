@@ -4,12 +4,12 @@ babylond keys add wallet
 ## console output:
 #- name: wallet
 #  type: local
-#  address: bbn1d6z48lnw0g9l8ndumsy9r4cc5xw334mgatm4kx
+#  address: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 #  pubkey: '{"@type":"/cosmos.crypto.secp256k1.PubKey","key":"Auq9WzVEs5pCoZgr2WctjI7fU+lJCH0I3r6GC1oa0tc0"}'
 #  mnemonic: ""
 
 #!!! SAVE SEED PHRASE (example)
-kite upset hip dirt pet winter thunder slice parent flag sand express suffer chest custom pencil mother bargain remember patient other curve cancel sweet
+kite xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx sweet
 
 # wait util the node is synced, should return FALSE
 babylond status 2>&1 | jq .SyncInfo.catching_up

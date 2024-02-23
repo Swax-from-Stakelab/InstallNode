@@ -1,0 +1,23 @@
+#Get Validator Info
+zetacored status 2>&1 | jq .ValidatorInfo
+
+#Get Denom Info
+zetacored q bank denom-metadata -oj | jq
+
+#Get Sync Status
+zetacored status 2>&1 | jq .SyncInfo.catching_up
+
+#Get Latest Height
+zetacored status 2>&1 | jq .SyncInfo.latest_block_height
+
+#Get Peer
+echo $(zetacored tendermint show-node-id)'@'$(curl -s ifconfig.me)':'$(cat $HOME/.zetacored/config/config.toml | sed -n '/Address to listen for incoming connection/{n;p;}' | sed 's/.*://; s/".*//')
+
+#Reset Node
+zetacored tendermint unsafe-reset-all --home $HOME/.zetacored --keep-addr-book
+
+#Remove Node
+sudo systemctl stop zetacored && sudo systemctl disable zetacored && sudo rm /etc/systemd/system/zetacored.service && sudo systemctl daemon-reload && rm -rf $HOME/.zetacored && rm -rf node && sudo rm -rf $(which zetacored)
+
+#Get IP Address
+wget -qO- eth0.me
